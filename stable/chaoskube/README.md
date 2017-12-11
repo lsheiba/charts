@@ -41,10 +41,11 @@ $ helm install stable/chaoskube --set dryRun=false
 |---------------------------|-----------------------------------------------------|-----------------------------------|
 | `name`                    | container name                                      | chaoskube                         |
 | `image`                   | docker image                                        | quay.io/linki/chaoskube           |
-| `imageTag`                | docker image tag                                    | v0.4.0                            |
+| `imageTag`                | docker image tag                                    | v0.6.1                            |
 | `replicas`                | number of replicas to run                           | 1                                 |
 | `interval`                | interval between pod terminations                   | 10m                               |
 | `labels`                  | label selector to filter pods by                    | "" (matches everything)           |
+| `annotations`             | annotation selector to filter pods by               | "" (matches everything)           |
 | `namespaces`              | namespace selector to filter pods by                | "" (all namespaces)               |
 | `dryRun`                  | don't kill pods, only log what would have been done | true                              |
 | `resources.cpu`           | cpu resource requests and limits                    | 10m                               |

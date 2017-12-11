@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "factorio.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "factorio.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -11,8 +11,8 @@ spec:
   type: {{ .Values.factorioServer.serviceType }}
   ports:
   - name: factorio
-    port: 34197
+    port: {{ .Values.factorioServer.port | int }}
     targetPort: factorio
     protocol: UDP
   selector:
-    app: {{ template "fullname" . }}
+    app: {{ template "factorio.fullname" . }}

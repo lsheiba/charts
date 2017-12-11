@@ -35,17 +35,20 @@ The following tables lists the configurable parameters of the CockroachDB chart 
 | ----------------------- | ---------------------------------- | ---------------------------------------------------------- |
 | `Name`                  | Chart name                         | `cockroachdb`                                              |
 | `Image`                 | Container image name               | `cockroachdb/cockroach`                                    |
-| `ImageTag`              | Container image tag                | `latest`                                                    |
+| `ImageTag`              | Container image tag                | `v1.0`                                                     |
 | `ImagePullPolicy`       | Container pull policy              | `Always`                                                   |
 | `Replicas`              | k8s statefulset replicas           | `3`                                                        |
-| `MinAvailable`          | k8s PodDisruptionBudget parameter  | `67%`                                                        |
+| `MinAvailable`          | k8s PodDisruptionBudget parameter  | `67%`                                                      |
 | `Component`             | k8s selector key                   | `cockroachdb`                                              |
-| `GrpcPort`              | CockroachDB primary serving port   | `26257`                                                     |
+| `GrpcPort`              | CockroachDB primary serving port   | `26257`                                                    |
 | `HttpPort`              | CockroachDB HTTP port              | `8080`                                                     |
 | `Cpu`                   | Container requested cpu            | `100m`                                                     |
 | `Memory`                | Container requested memory         | `512Mi`                                                    |
 | `Storage`               | Persistent volume size             | `1Gi`                                                      |
-| `StorageClass`          | Persistent volume class            | `anything`                                                      |
+| `StorageClass`          | Persistent volume class            | `anything`                                                 |
+| `ClusterDomain`         | Cluster's default DNS domain       | `cluster.local`                                            |
+| `NetworkPolicy.Enabled` | Enable NetworkPolicy               | `false`                                                    |
+| `NetworkPolicy.AllowExternal` | Don't require client label for connections | `true`                                       |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
@@ -74,7 +77,7 @@ was created with your installed chart):
 $ kubectl run -it --rm cockroach-client \
     --image=cockroachdb/cockroach \
     --restart=Never \
-    --command -- ./cockroach sql --host my-release-cockroachdb-public
+    --command -- ./cockroach sql --insecure --host my-release-cockroachdb-public
 Waiting for pod default/cockroach-client to be running, status is Pending,
 pod ready: false
 If you don't see a command prompt, try pressing enter.
@@ -176,6 +179,22 @@ clusterID:  {35ecbc27-3f67-4e7d-9b8f-27c31aae17d6}
 nodeID:     2
 [...]
 ```
+
+## NetworkPolicy
+
+To enable network policy for CockroachDB,
+install [a networking plugin that implements the Kubernetes
+NetworkPolicy spec](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy#before-you-begin),
+and set `NetworkPolicy.Enabled` to `true`.
+
+For Kubernetes v1.5 & v1.6, you must also turn on NetworkPolicy by setting
+the DefaultDeny namespace annotation. Note: this will enforce policy for _all_ pods in the namespace:
+
+    kubectl annotate namespace default "net.beta.kubernetes.io/network-policy={\"ingress\":{\"isolation\":\"DefaultDeny\"}}"
+
+For more precise policy, set `networkPolicy.allowExternal=false`. This will
+only allow pods with the generated client label to connect to CockroachDB.
+This label will be displayed in the output of a successful install.
 
 ## Scaling
 

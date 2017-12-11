@@ -7,20 +7,26 @@ awsRegion: us-east-1
 
 image:
   repository: gcr.io/google_containers/cluster-autoscaler
-  tag: v0.4.0
+  tag: v0.6.1
   pullPolicy: IfNotPresent
 
-extraArgs: []
+extraArgs: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
 podAnnotations: {}
 replicaCount: 1
 
-resources:
-  limits:
-    cpu: 100m
-    memory: 300Mi
-  requests:
-    cpu: 100m
-    memory: 300Mi
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 300Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 300Mi
 
 scaleDownDelay: 10m
 

@@ -16,7 +16,7 @@ It also packages the [Bitnami MariaDB chart](https://github.com/kubernetes/chart
 
 ## Prerequisites
 
-- Kubernetes 1.4+ with Beta APIs enabled
+- Kubernetes 1.5+ with Beta APIs enabled
 - PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
@@ -51,7 +51,7 @@ The following tables lists the configurable parameters of the PrestaShop chart a
 | `imagePullPolicy`                     | Image pull policy                           | `Always` if `image` tag is `latest`, else `IfNotPresent` |
 | `prestashopHost`                      | PrestaShop host to create application URLs  | `nil`                                                    |
 | `prestashopLoadBalancerIP`            | `loadBalancerIP` for the PrestaShop Service | `nil`                                                    |
-| `prestashopUsername`                  | User of the application                     | `user`                                                   |
+| `prestashopUsername`                  | User of the application                     | `user@example.com`                                       |
 | `prestashopPassword`                  | Application password                        | _random 10 character long alphanumeric string_           |
 | `prestashopEmail`                     | Admin email                                 | `user@example.com`                                       |
 | `prestashopFirstName`                 | First Name                                  | `Bitnami`                                                |
